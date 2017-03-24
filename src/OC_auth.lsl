@@ -113,7 +113,7 @@ ShowSettings(key kID) {
     if (llGetListLength(g_lTrusted)) Notify(kID, "Trusted:" + GetList(g_lTrusted), FALSE);
     if (llGetListLength(g_lTempOwner)) Notify(kID, "Temp Owners:" + GetList(g_lTempOwner), FALSE);
     if (llGetListLength(g_lBlockList)) Notify(kID, "Blocked: " + GetList(g_lBlockList), FALSE);
-    if (g_kGroup!=NULL_KEY) Notify(kID, "Group: secondlife:///app/group/"+(string)g_kGroup+"/about", FALSE);
+    if (g_kGroup!=NULL_KEY && g_kGroup!="") Notify(kID, "Group: secondlife:///app/group/"+(string)g_kGroup+"/about", FALSE);
     if (g_iPublicAccess) Notify(kID, "Public Access: open", FALSE);
     else Notify(kID, "Public Access: closed", FALSE);
 }
@@ -177,7 +177,7 @@ default {
             else if (token == "block") g_lBlockList = llParseString2List(value, [","], [""]);
             else if (token == "group") {
                 g_kGroup = (key)value;
-                if (g_kGroup!=NULL_KEY) {
+                if (g_kGroup!=NULL_KEY && g_kGroup!="") {
                     if (g_kGroup == g_kObject) g_iGroupEnabled = TRUE;
                     else g_iGroupEnabled = FALSE;
                 } else g_iGroupEnabled = FALSE;
