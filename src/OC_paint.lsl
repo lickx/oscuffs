@@ -353,7 +353,7 @@ Dialog(key kRCPT, string sPrompt, list lChoices, list lUtility, integer iPage, i
 Notify(key kAv, string sMsg, integer iAlsoNotifyWearer) {
     if (kAv == g_kWearer) llOwnerSay(sMsg);
     else {
-        if (llGetAgentSize(kAv)) llRegionSayTo(kAv,0,sMsg);
+        if (llGetAgentSize(kAv)!=ZERO_VECTOR) llRegionSayTo(kAv,0,sMsg);
         else llInstantMessage(kAv, sMsg);
         if (iAlsoNotifyWearer) llOwnerSay(sMsg);
     }
