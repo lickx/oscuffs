@@ -115,7 +115,7 @@ SetElementTexture(string sElement, string sTex) {
 
 SetTexture(string element, string stex) {
     key tex ;
-    if ((key)stex) tex = stex;
+    if (osIsUUID(stex)) tex = stex;
     else tex = llGetInventoryKey(stex);
 
     if (SetPrimsTexture(element, tex) == FALSE) return;
