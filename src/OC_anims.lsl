@@ -320,7 +320,7 @@ CallLegAnim(string sMsg, key kID) {
             if (sAnim == "*none*") DoAnim("l", "Stop");
             else {
                 DoAnim("l", sAnim);
-                integer index = llListFindList(g_lHeights,[g_sLegActAnim]);
+                index = llListFindList(g_lHeights,[g_sLegActAnim]);
                 if (~index) AdjustHeight(llList2Float(g_lHeights,index+1));
                 else AdjustHeight(0.0);
             }
@@ -624,7 +624,7 @@ default {
                     else if (msg == "↑" || msg == "↓") {
                         float fNewHover = g_fHoverIncrement;
                         if (msg == "↓") fNewHover = -fNewHover;
-                        integer index = llListFindList(g_lHeights,[g_sLegActAnim]);
+                        index = llListFindList(g_lHeights,[g_sLegActAnim]);
                         if (~index) {
                             fNewHover = fNewHover + llList2Float(g_lHeights,index+1);
                             if (fNewHover) g_lHeights = llListReplaceList(g_lHeights,[fNewHover],index+1,index+1);

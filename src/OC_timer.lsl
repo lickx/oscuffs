@@ -44,7 +44,7 @@ string UNCHAIN = "unchain" ;
 string RLVCLR = "clear RLV" ;
 integer MAX_TIME=0x7FFFFFFF;
 
-list localbuttons = [ONLINE, REALTIME];
+list localbuttons = ["ONLINE", "REAL"]; // ONLINE, REALTIME
 list timebuttons = ["clear","+00:01","+00:05","+00:30","+03:00","+24:00","-00:01","-00:05","-00:30","-03:00","-24:00"];
 list timechanges = [0, 60, 300, 1800, 10800, 86400, -60, -300, -1800, -10800, -86400];
 

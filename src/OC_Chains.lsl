@@ -10,14 +10,14 @@ list g_lCommands = ["id","link","unlink","ping","free","texture","size","life","
 
 // These textures were granted by Zi and Tengu (see credits at top) for use in OC_ V2.
 // Although they are being distributed with V2, they are still owned by their respective creators.
-key kDefaultChain = "40809979-b6be-2b42-e915-254ccd8d9a08";
-key kDefaultRope = "bc586d76-c5b9-de10-5b66-e8840f175e0d";
+key kDefaultChain = "796ef797-1726-4409-a70f-cd64304ada22";
+key kDefaultRope = "36b304cc-6209-4f47-9e4a-a68901e98e6e";
 
 // Default particle chain values, if they're not loaded from the configuration notecard
 // these are what they will be. Don't change the defaults here, change them in the OC_ V2
 // Config notecard instead.
 //key   kTextureDefault = "40809979-b6be-2b42-e915-254ccd8d9a08";
-key   kTextureDefault = "245ea72d-bc79-fee3-a802-8e73c0f09473";
+key   kTextureDefault = "796ef797-1726-4409-a70f-cd64304ada22";
 
 vector vSizeDefault = <0.07,0.07,1>;
 float fLifeDefault = 1;
@@ -71,7 +71,6 @@ FindCuffPoints() {
 
             if (llSubStringIndex(name, "OC:") == 0) {
                 list points = llCSV2List(llGetSubString(name, llSubStringIndex(name,":")+1, -1 ));
-                integer i;
                 for (i=0 ; i<llGetListLength(points) ; i++) {
                     string PointName = llList2String(points,i);
                     g_lOC_Points += [PointName] ;

@@ -517,7 +517,7 @@ default {
 
                 if (sMenuType == "ElementMenu") {
                     if (sMessage == UPMENU) llMessageLinked(LINK_SET, iAuth, "menu " + g_sParentMenu, kAv);
-                    else if (~llListFindList(g_lElements, [sMessage]) || sMessage == "All") {
+                    else if ((~llListFindList(g_lElements, [sMessage])) || sMessage == "All") {
                         g_sCurrentElement = sMessage;
                         CustomMenu(kAv, iPage, iAuth);
                     } else {

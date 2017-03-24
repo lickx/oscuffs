@@ -61,101 +61,6 @@ AdjustRot(vector vDelta) {
     ForceUpdate();
 }
 
-// SizeScale
-list g_lPrimStartSizes; // area for initial prim sizes (stored on rez)
-integer g_iScaleFactor = 100; // the size on rez is always regarded as 100% to preven problem when scaling an item +10% and than - 10 %, which would actuall lead to 99% of the original size
-integer g_iSizedByScript = FALSE; // prevent reseting of the script when the item has been chnged by the script
-
-integer MinMaxUnscaled(vector vSize, float fScale) {
-    if (fScale < 10.0) {
-        if (vSize.x <= 0.01 || vSize.y <= 0.01 || vSize.z <= 0.01) return TRUE;
-    } else {
-        if (vSize.x >= 10.0 || vSize.y >= 10.0 || vSize.z >= 10.0) return TRUE;
-    }
-    return FALSE;
-}
-
-integer MinMaxScaled(vector vSize, float fScale) {
-    if (fScale < 10.0) {
-        if (vSize.x < 0.01 || vSize.y < 0.01 || vSize.z < 0.01) return TRUE;
-    } else {
-        if (vSize.x > 10.0 || vSize.y > 10.0 || vSize.z > 10.0) return TRUE;
-    }
-    return FALSE;
-}
-
-Store_StartScaleLoop() {
-    g_lPrimStartSizes = [];
-    integer iPrimIndex;
-    vector vPrimScale;
-    vector vPrimPosit;
-    list lPrimParams;
-    if (g_iLinks < 2) {
-        vPrimScale = llGetScale();
-        g_lPrimStartSizes += vPrimScale.x;
-    } else {
-        for (iPrimIndex = 1; iPrimIndex <= g_iLinks; iPrimIndex++) {
-            lPrimParams = llGetLinkPrimitiveParams( iPrimIndex, [PRIM_SIZE, PRIM_POSITION]);
-            vPrimScale = llList2Vector(lPrimParams,0);
-            vPrimPosit = (llList2Vector(lPrimParams,1)-llGetRootPosition())/llGetRootRotation();
-            g_lPrimStartSizes += [vPrimScale,vPrimPosit];
-        }
-    }
-    g_iScaleFactor = 100;
-}
-
-ScalePrimLoop(integer iScale, integer iRezSize, key kID) {
-    integer iPrimIndex;
-    float fScale = iScale / 100.0;
-    list lPrimParams;
-    vector vPrimScale;
-    vector vPrimPos;
-    vector vSize;
-    if (g_iLinks < 2) {
-        vSize = llList2Vector(g_lPrimStartSizes,0);
-        if (MinMaxUnscaled(llGetScale(), fScale) || !iRezSize) {
-            Notify(kID, "Cannot be scaled as you requested; prims are already at minimum or maximum size.");
-            return;
-        } else if (MinMaxScaled(fScale * vSize, fScale) || !iRezSize)         {
-            Notify(kID, "Cannot be scaled as you requested; prims would surpass minimum or maximum size.");
-            return;
-        } else llSetScale(fScale * vSize); // not linked prim
-    } else {
-        if (!iRezSize) {
-            // first some checking
-            for (iPrimIndex = 1; iPrimIndex <= g_iLinks; iPrimIndex++) {
-                lPrimParams = llGetLinkPrimitiveParams( iPrimIndex, [PRIM_SIZE, PRIM_POSITION]);
-                vPrimScale = llList2Vector(g_lPrimStartSizes, (iPrimIndex - 1) * 2);
-
-                if (MinMaxUnscaled(llList2Vector(lPrimParams,0), fScale)) {
-                    Notify(kID, "Cannot be scaled as you requested; prims are already at minimum or maximum size.");
-                    return;
-                } else if (MinMaxScaled(fScale * vPrimScale, fScale)) {
-                    Notify(kID, "Cannot be scaled as you requested; prims would surpass minimum or maximum size.");
-                    return;
-                }
-            }
-        }
-        Notify(kID, "Scaling started, please wait ...");
-        g_iSizedByScript = TRUE;
-        for (iPrimIndex = 1; iPrimIndex <= g_iLinks; iPrimIndex++)         {
-            // lPrimParams = llGetLinkPrimitiveParams(iPrimIndex, [PRIM_SIZE, PRIM_POSITION]);
-            vPrimScale = fScale * llList2Vector(g_lPrimStartSizes, (iPrimIndex - 1) * 2);
-            vPrimPos = fScale * llList2Vector(g_lPrimStartSizes, (iPrimIndex - 1) * 2 + 1);
-            if (iPrimIndex == 1) llSetLinkPrimitiveParamsFast(iPrimIndex, [PRIM_SIZE, vPrimScale]);
-            else llSetLinkPrimitiveParamsFast(iPrimIndex, [PRIM_SIZE, vPrimScale, PRIM_POSITION, vPrimPos]);
-        }
-        g_iScaleFactor = iScale;
-        g_iSizedByScript = TRUE;
-        Notify(kID, "Scaling finished, the cuff is now on "+ (string)g_iScaleFactor +"% of the rez size.");
-    }
-}
-
-AdjustSize(integer iSizeFactor, key kID) {
-    if (iSizeFactor == -1000 && g_iScaleFactor != 100) ScalePrimLoop(100, TRUE, kID);
-    else ScalePrimLoop(g_iScaleFactor + iSizeFactor, FALSE, kID);
-}
-
 // *********************************
 
 
@@ -311,11 +216,11 @@ SetLockElementAlpha() {
     //loop through stored links, setting alpha if element type is lock
     integer link;
     for (link = 0; link < llGetListLength(g_lOpenLockElements); link++) {
-        llSetLinkAlpha(llList2Integer(g_lOpenLockElements,link), !g_iLocked, ALL_SIDES);
+        llSetLinkAlpha(llList2Integer(g_lOpenLockElements,link), (float)(!g_iLocked), ALL_SIDES);
     }
 
     for (link = 0; link < llGetListLength(g_lClosedLockElements); link++) {
-        llSetLinkAlpha(llList2Integer(g_lClosedLockElements,link), g_iLocked, ALL_SIDES);
+        llSetLinkAlpha(llList2Integer(g_lClosedLockElements,link), (float)g_iLocked, ALL_SIDES);
     }
 }
 
@@ -398,8 +303,12 @@ CuffCmd(string sMsg, key kID) {
     } else if (cmd == "HideElement") SetHide(value, (integer)value2);
     else if (cmd == "Position") AdjustPos((vector)value);
     else if (cmd == "Rotation") AdjustRot((vector)value);
-    else if (cmd == "Size") AdjustSize((integer)value, kID);
-    else if (sMsg == "check_attach") SendCmd(g_sCmdToken, "attached=" + g_sCuffToken);
+    else if (cmd == "Size") {
+        float fSizeFactor = (float)value;
+        if (llScaleByFactor(fSizeFactor)==FALSE) {
+            Notify(kID, "Cannot be scaled as you requested; prims would surpass minimum or maximum size.");
+        };
+    } else if (sMsg == "check_attach") SendCmd(g_sCmdToken, "attached=" + g_sCuffToken);
     else if (sMsg == "update") {
         if (kID == g_kWearer) {
             //Notify(kID, "Searching Cuffs Updater...");
@@ -529,7 +438,6 @@ default {
     state_entry() {
         init();
         BuildElementsLists();
-        Store_StartScaleLoop();
     }
 
     touch_start(integer nCnt) {
@@ -576,11 +484,6 @@ default {
     }
 
     changed(integer iChange) {
-        if (iChange & CHANGED_SCALE) {
-            if (g_iSizedByScript) llSetTimerEvent(0.5);
-            else Store_StartScaleLoop();
-        }
-        if (iChange & (CHANGED_SHAPE | CHANGED_LINK)) Store_StartScaleLoop();
         if (iChange & CHANGED_LINK) BuildElementsLists();
         if (iChange & CHANGED_REGION) SetLocking(g_iLocked);
     }
@@ -594,8 +497,6 @@ default {
             llOwnerSay("Cuffs Updater not found!");
         }
         
-        if (g_iSizedByScript) g_iSizedByScript = FALSE;
-
         if (listener) {
             llListenRemove(listener);
             if (checkcount == 1) CheckRLV();
