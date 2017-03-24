@@ -42,8 +42,8 @@ string AUTOLOCK_OFF = "☐ AutoLock";
 
 // *********** LOCK/UNLOCK *******************
 
-string g_sLockSound = "caa78697-8493-ead3-4737-76dcc926df30";
-string g_sUnLockSound = "ff09cab4-3358-326e-6426-ec8d3cd3b98e";
+string g_sLockSound = "7d99f682-9f9a-4a78-801d-d7e676e67f0e";
+string g_sUnLockSound = "0b0ccdb0-546f-4e76-9329-08ceba5fe2c6";
 
 list g_lClosedLockElements;
 list g_lOpenLockElements;
