@@ -1,0 +1,31 @@
+# OpenCollar 8Cuffs
+ARMS
+Back|Cuff-Back|illac=irlac~iruac=iluac
+Back2|Cuff-Back2|llac=rlac~ruac=luac~ollac=bocbelt~orlac=bocbelt
+#Back3|shackles_back|illac=irlac~iluac=iruac
+Belt|Cuff-Belt2|orlac=rocbelt~ollac=locbelt~ruac=luac~bocbelt=irlac~bocbelt=illac
+Belt2|Cuff-Belt2|rlac=rocbelt~llac=locbelt~luac=ruac~ruac=bocbelt~bocbelt=luac
+Front|Cuff-Front|irlac=illac
+Front2|Cuff-Front2|irlac=ollac~orlac=illac~iluac=iruac
+#Front High|O-Pose|llac=rlac~orlac=foccollar
+Hang|Cuff-Hanging|orlac=illac~oluac=oruac
+Head|Cuff-Head|rlac=llac~orlac=oruac~iluac=iruac~ollac=oluac
+Pinion|Cuff-Pinion|orlac=rocbelt~ollac=locbelt~bocbelt=ruac~luac=bocbelt~ruac=luac~ollac=oluac~orlac=oruac
+#UShape|Cuff-UShape|rlac=llac~illac=iluac~iruac=irlac~bocbelt=ollac~bocbelt=orlac
+UShape|Cuff-Ushape2|rlac=llac~illac=iluac~iruac=irlac~bocbelt=ollac~bocbelt=orlac
+
+LEGS
+Chain Only|*none*|rllc=lllc
+Belly|Cuff-Belly|irllc=illlc~lllc=rllc
+Butterfly|Cuff-Butterfly|lfbelt=lllc~rfbelt=rllc~ilulc=locbelt~irulc=rocbelt~irllc=illlc
+Hang|Cuff-Hang|rllc=lllc~orulc=illlc~olulc=irllc~rulc=lulc~orulc=rocbelt~olulc=locbelt
+Hogtie|hogtie|lllc=lbbelt~rllc=rbbelt~rlac=llac~irllc=orlac~illlc=ollac~llac=rlac~irllc=illlc~ilulc=irulc~rocbelt=oruac~locbelt=oluac~iruac=iluac~luac=loccollar~ruac=roccollar
+HogtieLeft|hogtiel|lllc=lbbelt~rllc=rbbelt~rlac=llac~irllc=orlac~illlc=ollac~llac=rlac~irllc=illlc~ilulc=irulc~rocbelt=oruac~locbelt=oluac~iruac=iluac~luac=loccollar~ruac=roccollar
+HogtieRight|hogtier|lllc=lbbelt~rllc=rbbelt~rlac=llac~irllc=orlac~illlc=ollac~llac=rlac~irllc=illlc~ilulc=irulc~rocbelt=oruac~locbelt=oluac~iruac=iluac~luac=loccollar~ruac=roccollar
+HogtieBack|hogtieb|lllc=lbbelt~rllc=rbbelt~rlac=llac~irllc=orlac~illlc=ollac~llac=rlac~irllc=illlc~ilulc=irulc~rocbelt=oruac~locbelt=oluac~iruac=iluac~luac=loccollar~ruac=roccollar
+HogtieBow|hogtie1|lllc=lbbelt~rllc=rbbelt~rlac=llac~irllc=orlac~illlc=ollac~llac=rlac~irllc=illlc~ilulc=irulc~rocbelt=oruac~locbelt=oluac~iruac=iluac~luac=loccollar~ruac=roccollar
+Kneel|Cuff-Kneel|irllc=illlc~orllc=orulc~olllc=olulc
+Splits|Cuff-Splits|orulc=rocbelt~olulc=locbelt~rocbelt=iruac~locbelt=iluac~orlac=orllc~ollac=olllc
+Sit|Cuff-Sit|irllc=illlc~irulc=ilulc~olllc=locbelt~orllc=rocbelt
+
+

@@ -1,0 +1,4 @@
+shine=Base~3~D-ring~3~Lock~3
+color=Base~<1,1,1>~D-ring~<1,1,1>~Padding~<1,1,1>~Lock~<1,1,1>
+texture=Base~5ab1c02f-22e7-5238-3aec-5cc9c9a83cdd~D-ring~5ab1c02f-22e7-5238-3aec-5cc9c9a83cdd~Padding~9fae0bc5-666d-477e-9f70-84e8556ec867~Lock~5ab1c02f-22e7-5238-3aec-5cc9c9a83cdd
+rlvon=1
