@@ -18,8 +18,9 @@ integer MENUNAME_RESPONSE = 3001;
 //integer MENUNAME_REMOVE = 3003;
 
 string parentmenu = "Options";
-string DUMPCACHE = "Dump Settings";
-string RELOAD = "Load Defaults";
+string BTN_PRINT  = "Print";
+string BTN_SAVE   = "Save card";
+string BTN_RELOAD = "Load card";
 
 string defaultscard = "defaultsettings";
 integer defaultsline = 0;
@@ -34,6 +35,8 @@ integer g_iReload = FALSE ;
 
 list settings_pairs;// stores all settings
 list settings_default; // Default settings placeholder.
+
+integer g_iSaveSettingsTimer;
 
 Notify(key kID, string sMsg, integer iAlsoNotifyWearer) {
     if (kID == g_kWearer) llOwnerSay(sMsg);
@@ -94,6 +97,25 @@ DumpCache() {
         } else sOut += sAdd;
     }
     llOwnerSay("\n" + sOut);
+}
+
+SaveSettings() {
+    string sOut;
+    integer n;
+    integer iStop = llGetListLength(settings_pairs);
+    for (n = 0; n < iStop; n = n + 2) {
+        //handle strlength > 1024
+        string token = llList2String(settings_pairs, n);
+        string sAdd;
+        if (token) sAdd = token + "=" + llList2String(settings_pairs, n + 1) + "\n";
+        if (llStringLength(sOut + sAdd) > 1024) {
+            llOwnerSay("\n" + sOut);
+            sOut = sAdd;
+        } else sOut += sAdd;
+    }
+    osMakeNotecard(defaultscard+".tmp", sOut);
+    g_iSaveSettingsTimer = llGetUnixTime()+10;
+    llSetTimerEvent(0.5);
 }
 
 SendValues() {
@@ -184,10 +206,13 @@ default {
         } else if (iNum >= CMD_OWNER && iNum <= CMD_WEARER) {
             if (iNum == CMD_OWNER || kID == g_kWearer) {
                 if (sStr == "cachedump") DumpCache();
-                else if (sStr == "menu " + DUMPCACHE) {
+                else if (sStr == "menu " + BTN_PRINT) {
                     DumpCache();
                     llMessageLinked(LINK_THIS, iNum, "menu " + parentmenu, kID);
-                } else if (sStr == "menu " + RELOAD) {
+                } else if (sStr == "menu " + BTN_SAVE) {
+                    SaveSettings();
+                    llMessageLinked(LINK_THIS, iNum, "menu " + parentmenu, kID);
+                } else if (sStr == "menu " + BTN_RELOAD) {
                     g_iReload = TRUE ;
                     Notify(kID, "Loading defaultsettings...", TRUE);
                     LoadCard();
@@ -195,8 +220,9 @@ default {
                 } else if (sStr == "reset" || sStr == "runaway") llResetScript();
             }
         } else if (iNum == MENUNAME_REQUEST && sStr == parentmenu) {
-            llMessageLinked(LINK_THIS, MENUNAME_RESPONSE, parentmenu + "|" + DUMPCACHE, "");
-            llMessageLinked(LINK_THIS, MENUNAME_RESPONSE, parentmenu + "|" + RELOAD, "");
+            llMessageLinked(LINK_THIS, MENUNAME_RESPONSE, parentmenu + "|" + BTN_PRINT, "");
+            llMessageLinked(LINK_THIS, MENUNAME_RESPONSE, parentmenu + "|" + BTN_SAVE, "");
+            llMessageLinked(LINK_THIS, MENUNAME_RESPONSE, parentmenu + "|" + BTN_RELOAD, "");
         }
     }
 
@@ -207,7 +233,32 @@ default {
                 SendValues();
                 scriptcount = llGetInventoryNumber(INVENTORY_SCRIPT);
             }
-            if (llGetInventoryKey(defaultscard) != card_key) LoadCard();
+            if (llGetInventoryKey(defaultscard) != card_key &&
+                llGetInventoryKey(defaultscard) != NULL_KEY) LoadCard();
+        }
+    }
+    
+    timer()
+    {
+        integer iTimeStamp = llGetUnixTime();
+        
+        if (g_iSaveSettingsTimer > iTimeStamp) {
+            // saved settings not found, wait a bit longer:
+            if (llGetInventoryKey(defaultscard+".tmp")==NULL_KEY) return;
+            else {
+                // We got our settings, replace the current settings with the tmp card
+                llSetTimerEvent(0);
+                g_iSaveSettingsTimer=0;
+                string sCard = osGetNotecard(defaultscard+".tmp");
+                llRemoveInventory(defaultscard+".tmp");
+                llRemoveInventory(defaultscard);
+                osMakeNotecard(defaultscard, sCard);
+                llOwnerSay("Settings have been saved");
+            }
+        } else {
+            llSetTimerEvent(0);
+            g_iSaveSettingsTimer=0;
+            llOwnerSay("This region doesn't allow saving settings");
         }
     }
 }
