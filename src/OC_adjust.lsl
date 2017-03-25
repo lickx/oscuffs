@@ -89,6 +89,47 @@ list l_CuffsBtn = [];
 list g_lMenuIDs;  //three strided list of avkey, dialogid, and menuname
 integer g_iMenuStride = 3;
 
+float MAX_PRIM_SIZE=2.0; //maximum allowable prim size
+float MIN_PRIM_SIZE=0.001; //minimum allowable prim size
+float MAX_LINK_DIST=100.0; //maximum allowable link distance (hmn what is this value on opensim?)
+
+vector GetScaleFactors()
+{
+    integer p = llGetNumberOfPrims();
+    integer i;
+    list pos;
+    list size;
+    while (i < p) {
+        list t = llGetLinkPrimitiveParams(i+1,[PRIM_SIZE,PRIM_POS_LOCAL]);
+        if (i > 0) {
+            vector o=llList2Vector(t,1);
+            pos+=[llFabs(o.x),llFabs(o.y),llFabs(o.z)];
+        }
+        vector s=llList2Vector(t,0);size+=[s.x,s.y,s.z];++i;
+    }
+    float maxr = MAX_PRIM_SIZE/llListStatistics(LIST_STAT_MAX, size);
+    if (llGetListLength(pos)) {
+        maxr = osMin(MAX_LINK_DIST/llListStatistics(LIST_STAT_MAX,pos), maxr);
+    }
+    return <MIN_PRIM_SIZE/llListStatistics(LIST_STAT_MIN,size),maxr,0>;
+}
+
+integer ScaleByFactor(float f)
+{
+    vector v=GetScaleFactors();
+    if(f<v.x || f>v.y) return FALSE;
+    else {
+        integer p=llGetNumberOfPrims();
+        integer i;list n;
+        while(i<p) {
+            list t=llGetLinkPrimitiveParams(i+1,[PRIM_SIZE,PRIM_POS_LOCAL]);
+            n+=[PRIM_LINK_TARGET,i+1,PRIM_SIZE,llList2Vector(t,0)*f];
+            if(i>0){n+=[PRIM_POS_LOCAL,llList2Vector(t,1)*f];}++i;
+        }
+        llSetPrimitiveParams(n);
+        return TRUE;
+    }
+}
 
 debug(string str) {
     llOwnerSay(llGetScriptName() + ": " + str);
@@ -274,7 +315,7 @@ AdjustRot(vector vDelta) {
 }
 
 AdjustSize(float fSizeFactor, key kID) {
-    if (llScaleByFactor(fSizeFactor)==FALSE) {
+    if (ScaleByFactor(fSizeFactor)==FALSE) {
         Notify(kID, "Cannot be scaled as you requested; prims would surpass minimum or maximum size.", FALSE);
     }
 }

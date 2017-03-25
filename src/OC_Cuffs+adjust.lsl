@@ -6,6 +6,48 @@ integer g_iUpdateChan = -87383215;
 integer g_iUpdateListen;
 integer g_iWaitUpdate = FALSE;
 
+float MAX_PRIM_SIZE=2.0; //maximum allowable prim size
+float MIN_PRIM_SIZE=0.001; //minimum allowable prim size
+float MAX_LINK_DIST=100.0; //maximum allowable link distance
+
+vector GetScaleFactors()
+{
+    integer p = llGetNumberOfPrims();
+    integer i;
+    list pos;
+    list size;
+    while (i < p) {
+        list t = llGetLinkPrimitiveParams(i+1,[PRIM_SIZE,PRIM_POS_LOCAL]);
+        if (i > 0) {
+            vector o=llList2Vector(t,1);
+            pos+=[llFabs(o.x),llFabs(o.y),llFabs(o.z)];
+        }
+        vector s=llList2Vector(t,0);size+=[s.x,s.y,s.z];++i;
+    }
+    float maxr = MAX_PRIM_SIZE/llListStatistics(LIST_STAT_MAX, size);
+    if (llGetListLength(pos)) {
+        maxr = osMin(MAX_LINK_DIST/llListStatistics(LIST_STAT_MAX,pos), maxr);
+    }
+    return <MIN_PRIM_SIZE/llListStatistics(LIST_STAT_MIN,size),maxr,0>;
+}
+
+integer ScaleByFactor(float f)
+{
+    vector v=GetScaleFactors();
+    if(f<v.x || f>v.y) return FALSE;
+    else {
+        integer p=llGetNumberOfPrims();
+        integer i;list n;
+        while(i<p) {
+            list t=llGetLinkPrimitiveParams(i+1,[PRIM_SIZE,PRIM_POS_LOCAL]);
+            n+=[PRIM_LINK_TARGET,i+1,PRIM_SIZE,llList2Vector(t,0)*f];
+            if(i>0){n+=[PRIM_POS_LOCAL,llList2Vector(t,1)*f];}++i;
+        }
+        llSetPrimitiveParams(n);
+        return TRUE;
+    }
+} 
+
 // *********************************
 // ************ Adjust *************
 
@@ -255,7 +297,7 @@ NotifyOwners() {
 Notify(key kID, string sMsg) {
     if (kID == g_kWearer) llOwnerSay(sMsg);
     else {
-        if (llGetAgentSize(kID)) llRegionSayTo(kID,0,sMsg);
+        if (llGetAgentSize(kID)!=ZERO_VECTOR) llRegionSayTo(kID,0,sMsg);
         else llInstantMessage(kID, sMsg);
     }
 }
@@ -305,7 +347,7 @@ CuffCmd(string sMsg, key kID) {
     else if (cmd == "Rotation") AdjustRot((vector)value);
     else if (cmd == "Size") {
         float fSizeFactor = (float)value;
-        if (llScaleByFactor(fSizeFactor)==FALSE) {
+        if (ScaleByFactor(fSizeFactor)==FALSE) {
             Notify(kID, "Cannot be scaled as you requested; prims would surpass minimum or maximum size.");
         };
     } else if (sMsg == "check_attach") SendCmd(g_sCmdToken, "attached=" + g_sCuffToken);
