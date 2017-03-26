@@ -37,9 +37,14 @@ string s_LockFALSE = "☐ LooksLock";
 string g_sChainMenu = "Chains";
 
 // name of buttons for the different chains in the chain  menu
-list g_lChainButtons = ["Thin Gold","OC Standard","Pink Chain","Black Chain","Rope"];
+list g_lChainButtons = ["Chain","Rope","Silk","Leather"];
 // LG command sequence to be send
-list g_lChainCommands = ["texture 6993a4d6-9155-d5cd-8434-a009b822d5a0 size 0.08 0.08 life 1 gravity 0.3","texture 245ea72d-bc79-fee3-a802-8e73c0f09473 size 0.07 0.07 life 1 gravity 0.3","texture 4c762c43-87d4-f6ba-55f4-f978b3cc4169 size 0.07 0.07 life 0.5 gravity 0.4 color 0.8 0.0 0.8","texture 4c762c43-87d4-f6ba-55f4-f978b3cc4169 size 0.07 0.07 life 0.5 gravity 0.4 color 0.1 0.1 0.1","texture 9de57a7d-b9d7-1b11-9be7-f0a42651755e size 0.07 0.07 life 0.5 gravity 0.3"];
+list g_lChainCommands = [
+                        "texture 796ef797-1726-4409-a70f-cd64304ada22 size 0.07 0.07 life 1 gravity 0.3",   //chain
+                        "texture 36b304cc-6209-4f47-9e4a-a68901e98e6e size 0.07 0.07 life 0.5 gravity 0.3", //rope
+                        "texture 8470e020-5ad2-4c91-ac89-d4c3f40c8fb3 size 0.08 0.08 life 0.5 gravity 0.3",   //silk
+                        "texture 133884b8-ef07-4799-bc85-2788510deb59 size 0.07 0.07 life 0.5 gravity 0.3"  //leather
+                        ];
 
 string g_sChainToken = "chaindefault";
 
@@ -141,7 +146,7 @@ default {
     }
 
     on_rez(integer param) {
-        llResetScript();
+        if (llGetOwner() != g_kWearer) llResetScript();
     }
 
     link_message(integer sender, integer iNum, string sStr, key kID) {
