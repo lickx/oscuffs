@@ -120,11 +120,11 @@ Menu(string name, key id, integer auth) {
 
 Autolock() {
     if (g_iAutoLock) {
-        HandleMenuRemove("Options|" + AUTOLOCK_OFF);
-        HandleMenuResponse("Options|" + AUTOLOCK_ON);
+        HandleMenuRemove("Settings|" + AUTOLOCK_OFF);
+        HandleMenuResponse("Settings|" + AUTOLOCK_ON);
     } else {
-        HandleMenuRemove("Options|" + AUTOLOCK_ON);
-        HandleMenuResponse("Options|" + AUTOLOCK_OFF);
+        HandleMenuRemove("Settings|" + AUTOLOCK_ON);
+        HandleMenuResponse("Settings|" + AUTOLOCK_OFF);
     }
 }
 
@@ -218,7 +218,7 @@ SetLockElementAlpha() {
 }
 
 MenuInit() {
-    g_lMenuNames = ["Main", "Options"];
+    g_lMenuNames = ["Main", "Settings"];
     g_lMenus = ["",""];
     integer n;
     integer stop = llGetListLength(g_lMenuNames);
@@ -231,7 +231,7 @@ MenuInit() {
             llMessageLinked(LINK_THIS, MENUNAME_REQUEST, name, "");
         }
     }
-    HandleMenuResponse("Options|Fix Menus");
+    HandleMenuResponse("Settings|Fix Menus");
     Autolock();
     llMessageLinked(LINK_THIS, MENUNAME_REQUEST, "Main", "");
 }
@@ -350,7 +350,7 @@ default {
                 else if (msg == UPDATE) UserCommand(auth, "update", av);
                 else if (msg == AUTOLOCK_ON || msg == AUTOLOCK_OFF) {
                     UserCommand(auth, "autolock", av);
-                    Menu("Options", av, auth);
+                    Menu("Settings", av, auth);
                 } else llMessageLinked(LINK_THIS, auth, "menu "+msg, av);
             }
         } else if (num == DIALOG_TIMEOUT) {

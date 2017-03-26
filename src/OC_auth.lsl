@@ -5,7 +5,7 @@
 //reset self on owner change
 
 string g_sParentMenu = "Main";
-string g_sSubMenu = "Access List";
+string g_sSubMenu = "Access";
 
 //MESSAGE MAP
 integer CMD_NOAUTH = 0;

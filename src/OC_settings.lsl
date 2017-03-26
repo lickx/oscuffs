@@ -17,10 +17,10 @@ integer MENUNAME_REQUEST = 3000;
 integer MENUNAME_RESPONSE = 3001;
 //integer MENUNAME_REMOVE = 3003;
 
-string parentmenu = "Options";
+string parentmenu = "Settings";
 string BTN_PRINT  = "Print";
-string BTN_SAVE   = "Save card";
-string BTN_RELOAD = "Load card";
+string BTN_SAVE   = "Save";
+string BTN_RELOAD = "Load";
 
 string defaultscard = "defaultsettings";
 integer defaultsline = 0;
@@ -82,7 +82,7 @@ list DelSetting(list cache, string token) {
     return cache;
 }
 
-DumpCache() {
+PrintSettings() {
     string sOut = "Settings: \n";
     integer n;
     integer iStop = llGetListLength(settings_pairs);
@@ -183,7 +183,7 @@ default {
                 // still resetting.
                 llSleep(0.5);
                 SendValues();
-                Notify(id, "defaultsettings load.", TRUE);
+                //Notify(id, "defaultsettings load.", TRUE);
                 g_iReload = FALSE;
             }
         }
@@ -205,16 +205,16 @@ default {
             settings_pairs = DelSetting(settings_pairs, sStr);
         } else if (iNum >= CMD_OWNER && iNum <= CMD_WEARER) {
             if (iNum == CMD_OWNER || kID == g_kWearer) {
-                if (sStr == "cachedump") DumpCache();
+                if (sStr == "cachedump") PrintSettings();
                 else if (sStr == "menu " + BTN_PRINT) {
-                    DumpCache();
+                    PrintSettings();
                     llMessageLinked(LINK_THIS, iNum, "menu " + parentmenu, kID);
                 } else if (sStr == "menu " + BTN_SAVE) {
                     SaveSettings();
                     llMessageLinked(LINK_THIS, iNum, "menu " + parentmenu, kID);
                 } else if (sStr == "menu " + BTN_RELOAD) {
                     g_iReload = TRUE ;
-                    Notify(kID, "Loading defaultsettings...", TRUE);
+                    Notify(kID, "Loading settings...", TRUE);
                     LoadCard();
                     //llMessageLinked(LINK_THIS, iNum, "menu " + parentmenu, kID);
                 } else if (sStr == "reset" || sStr == "runaway") llResetScript();
