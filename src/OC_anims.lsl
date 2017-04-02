@@ -526,7 +526,7 @@ default {
     }
 
     attach(key id) {
-        if (id) llRequestPermissions(id, PERMISSION_TRIGGER_ANIMATION|PERMISSION_TAKE_CONTROLS);
+        if (id!=NULL_KEY) llRequestPermissions(id, PERMISSION_TRIGGER_ANIMATION|PERMISSION_TAKE_CONTROLS);
     }
 
     state_entry() {

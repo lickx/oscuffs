@@ -450,7 +450,7 @@ default {
             for(n = 0; n < timeslength; n = n + 2) {
                 // send notice and find the next time.
                 if (llList2Integer(times, n)==ON_TIME) {
-                    while(llList2Integer(times, n+1)<=ontime&&llList2Integer(times, n)==ON_TIME&&times!=[]) {
+                    while(llList2Integer(times, n+1)<=ontime&&llList2Integer(times, n)==ON_TIME&&llGetListLength(times)) {
                         times=llDeleteSubList(times, n, n+1);
                         timeslength=llGetListLength(times);
                     }

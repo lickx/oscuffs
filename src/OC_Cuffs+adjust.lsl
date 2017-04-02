@@ -415,7 +415,7 @@ CheckCmd(key kID, string sMsg) {
             if (llListFindList(g_lCuffPoints,[receiver]) != -1 || receiver == "*") {
                 string cmd = llList2String(parsed,2) ;
                 key id = (key)llList2String(parsed,3) ;
-                if (id) kID = id ;
+                if (id != NULL_KEY) kID = id ;
 
                 parsed = llParseString2List(cmd,["~"],[]);
                 integer i;
