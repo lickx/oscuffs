@@ -164,7 +164,7 @@ DoCuffs() {
     for (i=0; i<n; i++) {
         string token = llList2String(g_lAttachedCuffs,i) ;
         integer index = llListFindList(l_CuffsTokens,[token]) ;
-        if(index!=-1) l_CuffsBtn += llList2String(l_Cuffs,index) ;
+        if(~index) l_CuffsBtn += llList2String(l_Cuffs,index) ;
     }
     l_CuffsBtn = llListSort(l_CuffsBtn,1,TRUE);
 }
@@ -347,7 +347,7 @@ default {
                 }
             }
             //list parsed = llParseString2List(sStr, ["="], []);
-            if (llSubStringIndex(sStr,checked) != -1) {
+            if (~llSubStringIndex(sStr,checked)) {
                 list parsed = llParseString2List(sStr, ["="], []);
                 string cuff = llList2String(parsed, 1);
                 if (llListFindList(g_lCuffs, [cuff]) == -1) g_lCuffs += [cuff] ;

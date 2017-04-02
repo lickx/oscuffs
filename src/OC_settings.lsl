@@ -78,7 +78,7 @@ string GetSetting(list cache, string token) {
 
 list DelSetting(list cache, string token) {
     integer idx = llListFindList(cache, [token]);
-    if (idx != -1) cache = llDeleteSubList(cache, idx, idx + 1);
+    if (~idx) cache = llDeleteSubList(cache, idx, idx + 1);
     return cache;
 }
 

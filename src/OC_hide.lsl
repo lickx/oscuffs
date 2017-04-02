@@ -132,14 +132,14 @@ UpdateHide() {
         string element = (llList2String(g_lHideElements,i));
         integer hide = 0;
         integer ii = llListFindList(g_lHideSettings,[element]);
-        if (ii!=-1) hide = llList2Integer(g_lHideSettings,ii+1);
+        if (~ii) hide = llList2Integer(g_lHideSettings,ii+1);
         SetElementHide(element,hide);
     }
 }
 
 SetElementHide(string sElement, integer hide) {
     integer found = llListFindList(g_lHideElements, [sElement]);
-    if (found != -1) {
+    if (~found) {
         list csvlinks = llCSV2List(llList2String(g_lHidePrims,found));
         integer i;
         integer count = llGetListLength(csvlinks);
@@ -160,7 +160,7 @@ DoButtons() {
         string element = (llList2String(elements,i));
         integer hide = 0;
         integer ii = llListFindList(g_lHideSettings,[element]);
-        if (ii!=-1) hide = llList2Integer(g_lHideSettings,ii+1);
+        if (~ii) hide = llList2Integer(g_lHideSettings,ii+1);
 
         if (hide == 1) g_lButtons += [g_sHide+" "+element];
         else g_lButtons += [g_sShow+" "+element];
@@ -211,7 +211,7 @@ SendSettings() {
             string element = (llList2String(g_lHideElements,i));
             integer hide = 0;
             integer n = llListFindList(g_lHideSettings,[element]);
-            if (n!=-1) hide = llList2Integer(g_lHideSettings,n+1);
+            if (~n) hide = llList2Integer(g_lHideSettings,n+1);
             cmd += "~"+g_sHideCmd+"="+element+"="+(string)hide;
         }
         llMessageLinked(LINK_THIS,LM_CUFF_SEND,"*|"+cmd, "");
@@ -286,7 +286,7 @@ default {
                 } else if (msg == g_sUnloced) {
                     g_iLocked = TRUE ;
                     llMessageLinked(LINK_THIS,LM_SETTING_SAVE,g_sHideLockToken+"="+(string)g_iLocked,"");
-                } else if (llListFindList(g_lButtons,[msg]) != -1 ) {
+                } else if (~llListFindList(g_lButtons,[msg])) {
                     ShowHide(msg);
                 }
                 DoMenu(kAV,auth);

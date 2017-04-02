@@ -250,7 +250,7 @@ TimerWhentOff() {
 
 integer GetTimeChange(string sStr) {
     integer i = llListFindList(timebuttons,[sStr]);
-    if (i != -1) return llList2Integer(timechanges,i);
+    if (~i) return llList2Integer(timechanges,i);
     else return 0 ;
 }
 

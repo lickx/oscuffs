@@ -261,7 +261,7 @@ Chains(key kID, string sChain, string sLink) {
         else sCmd="link "+g_sLGChainTexture;
     } else sCmd="unlink";
 
-    if (llListFindList(g_lModTokens,[sTo]) != -1) {
+    if (~llListFindList(g_lModTokens,[sTo])) {
         llMessageLinked(LINK_SET, LM_CUFF_CMD, "chain=" + sChain + "=" + sCmd, g_kCuffKey);
     } else SendCmd(sTo, "chain=" + sChain + "=" + sCmd, g_kCuffKey);
 }
@@ -271,7 +271,7 @@ CallArmAnim(string sMsg, key kID) {
     string sAnim = "";
     string sChain = "";
     if (g_sArmActAnim != "") index = llListFindList(g_lArmLocks, [g_sArmActAnim]);
-    if (index != -1) {
+    if (~index) {
         sChain = llList2String(g_lArmChains, index);
         DoChains(kID, sChain, "unlink");
     }
@@ -280,7 +280,7 @@ CallArmAnim(string sMsg, key kID) {
         DoAnim("a", "Stop");
     } else {
         index = llListFindList(g_lArmLocks, [sMsg]);
-        if (index != -1) {
+        if (~index) {
             g_sArmActAnim = sMsg;
             sAnim = llList2String(g_lArmAnims, index);
             sChain = llList2String(g_lArmChains, index);
@@ -303,7 +303,7 @@ CallLegAnim(string sMsg, key kID) {
     string sAnim = "";
     string sChain = "";
     if (g_sLegActAnim != "") index = llListFindList(g_lLegLocks, [g_sLegActAnim]);
-    if ( index != -1) {
+    if (~index) {
         sChain = llList2String(g_lLegChains, index);
         DoChains(kID, sChain, "unlink");
     }
@@ -313,7 +313,7 @@ CallLegAnim(string sMsg, key kID) {
         AdjustHeight(0.0);
     } else {
         index = llListFindList(g_lLegLocks, [sMsg]);
-        if (index != -1) {
+        if (~index) {
             g_sLegActAnim = sMsg;
             sAnim = llList2String(g_lLegAnims, index);
             sChain = llList2String(g_lLegChains, index);

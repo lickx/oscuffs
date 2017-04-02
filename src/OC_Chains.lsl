@@ -219,7 +219,7 @@ default {
             lCommandLine = llDeleteSubList(lCommandLine, 0, 1);
             string cuffpoint = llList2String(lCommandLine, 0);
 
-            if (llListFindList(g_lOC_Points+["all"],[cuffpoint]) != -1) OC_Obey(lCommandLine);
+            if (~llListFindList(g_lOC_Points+["all"],[cuffpoint])) OC_Obey(lCommandLine);
 
         } else if (iNum == LM_CUFF_CMD) {
             // OpenCuffs ChainIt from here
@@ -231,7 +231,7 @@ default {
                 string sFrom = llList2String(lParsed, 1);
                 integer index = llListFindList(g_lOC_Points,[sFrom]);
 
-                if (index != -1 || sFrom == "*") {
+                if (~index || sFrom == "*") {
                     string sTo = llList2String(lParsed, 2);
                     string sLink = llList2String(lParsed, 3);
                     key CuffPointKey = llGetLinkKey(llList2Integer(g_lOC_Links,index));

@@ -124,7 +124,7 @@ CheckCmd(key kID, string sMsg) {
     if (llListFindList(g_lExtPrefix, [llList2String(parsed,0)]) == -1) return ; // a unknown external sender
     string receiver = llList2String(parsed,1);  // second part the receiver token
     // we are the receiver
-    if (llListFindList(g_lModTokens,[receiver]) != -1 || receiver == "*" ) {
+    if ((~llListFindList(g_lModTokens,[receiver])) || receiver == "*" ) {
         if (llGetListLength(parsed) < 4) ParseCmdString(llList2String(parsed,2), llGetOwnerKey(kID));
         else ParseCmdString(llList2String(parsed,2), llList2String(parsed,3));
     }

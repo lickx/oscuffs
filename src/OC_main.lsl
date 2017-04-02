@@ -104,7 +104,7 @@ Dialog(key rcpt, string prompt, list choices, list utility, integer page, intege
 Menu(string name, key id, integer auth) {
     string prompt = "\n" + name + " menu.\n";
     integer index = llListFindList(g_lMenuNames, [name]);
-    if (index != -1) {
+    if (~index) {
         list utility;
         list items = llParseString2List(llList2String(g_lMenus, index), ["|"], []);
         if (name == "Main") {
@@ -240,7 +240,7 @@ HandleMenuResponse(string entry) {
     list params = llParseString2List(entry, ["|"], []);
     string name = llList2String(params, 0);
     integer index = llListFindList(g_lMenuNames, [name]);
-    if (index != -1) {
+    if (~index) {
         //debug("we handle " + name);
         string submenu = llList2String(params, 1);
         //only add submenu if not already present
@@ -261,11 +261,11 @@ HandleMenuRemove(string entry) {
     string parent = llList2String(params, 0);
     string child = llList2String(params, 1);
     integer index = llListFindList(g_lMenuNames, [parent]);
-    if (index != -1) {
+    if (~index) {
         list guts = llParseString2List(llList2String(g_lMenus, index), ["|"], []);
         integer gutindex = llListFindList(guts, [child]);
         //only remove if it's there
-        if (gutindex != -1) {
+        if (~gutindex) {
             guts = llDeleteSubList(guts, gutindex, gutindex);
             g_lMenus = llListReplaceList(g_lMenus, [llDumpList2String(guts, "|")], index, index);
         }

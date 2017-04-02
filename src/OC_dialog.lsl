@@ -125,7 +125,7 @@ list PrettyButtons(list options, list utility, list pagebuttons) {
     }
     // check if a UPBUTTON is present and remove it for the moment
     integer u = llListFindList(combined, [UPMENU]);
-    if (u != -1)  combined = llDeleteSubList(combined, u, u);
+    if (~u)  combined = llDeleteSubList(combined, u, u);
 
     list out = llList2List(combined, 9, 11);
     out += llList2List(combined, 6, 8);
@@ -133,7 +133,7 @@ list PrettyButtons(list options, list utility, list pagebuttons) {
     out += llList2List(combined, 0, 2);
 
     //make sure we move UPMENU to the lower right corner
-    if (u != -1) out = llListInsertList(out, [UPMENU], 2);
+    if (~u) out = llListInsertList(out, [UPMENU], 2);
 
     return out;
 }

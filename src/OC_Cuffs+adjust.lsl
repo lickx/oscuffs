@@ -188,7 +188,7 @@ UpdateHide() {
         string element = llList2String(g_lHideElements,i);
         integer hide = 0;
         integer n = llListFindList(g_lHideSettings,[element]);
-        if (n != -1) hide = llList2Integer(g_lHideSettings, n+1);
+        if (~n) hide = llList2Integer(g_lHideSettings, n+1);
         SetElementHide(element,hide);
     }
 }
@@ -412,7 +412,7 @@ CheckCmd(key kID, string sMsg) {
             // only accept command from the master cuff
             string receiver = llList2String(parsed,1);
             // we are the receiver?
-            if (llListFindList(g_lCuffPoints,[receiver]) != -1 || receiver == "*") {
+            if ((~llListFindList(g_lCuffPoints,[receiver])) || receiver == "*") {
                 string cmd = llList2String(parsed,2) ;
                 key id = (key)llList2String(parsed,3) ;
                 if (id != NULL_KEY) kID = id ;
