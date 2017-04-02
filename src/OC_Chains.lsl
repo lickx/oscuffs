@@ -231,7 +231,7 @@ default {
                 string sFrom = llList2String(lParsed, 1);
                 integer index = llListFindList(g_lOC_Points,[sFrom]);
 
-                if (~index || sFrom == "*") {
+                if ((~index) || sFrom == "*") {
                     string sTo = llList2String(lParsed, 2);
                     string sLink = llList2String(lParsed, 3);
                     key CuffPointKey = llGetLinkKey(llList2Integer(g_lOC_Links,index));
