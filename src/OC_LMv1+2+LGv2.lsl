@@ -135,15 +135,15 @@ list g_lLGcommands = ["id", "link", "unlink", "ping", "free", "texture", "size",
 
 // These textures were granted by Zi and Tengu (see credits at top) for use in LockGuard V2.
 // Although they are being distributed with V2, they are still owned by their respective creators.
-key kDefaultChain = "40809979-b6be-2b42-e915-254ccd8d9a08";
-key kDefaultRope = "bc586d76-c5b9-de10-5b66-e8840f175e0d";
+key kDefaultChain = "796ef797-1726-4409-a70f-cd64304ada22";
+key kDefaultRope = "36b304cc-6209-4f47-9e4a-a68901e98e6e";
 list lLockGuardID = [];
 key  kTarget;
 
 // Default particle chain values, if they're not loaded from the configuration notecard
 // these are what they will be. Don't change the defaults here, change them in the LockGuard V2
 // Config notecard instead.
-key   kTextureDefault = "40809979-b6be-2b42-e915-254ccd8d9a08";
+key   kTextureDefault = "796ef797-1726-4409-a70f-cd64304ada22";
 float fSizeXDefault = 0.07;
 float fSizeYDefault = 0.07;
 float fLifeDefault = 1;
@@ -216,7 +216,7 @@ LockGuardLink(integer iRelinking) {
     if (iRelinking == FALSE) kTarget = llList2Key(g_lCommandLine, ++g_iParserCount);
     if (fGravity == 0) nBitField = nBitField|PSYS_PART_TARGET_LINEAR_MASK;
 
-    llParticleSystem([ PSYS_PART_MAX_AGE, fLife, PSYS_PART_FLAGS, nBitField, PSYS_PART_START_COLOR, <fRed, fGreen, fBlue>, PSYS_PART_END_COLOR, <fRed, fGreen, fBlue>, PSYS_PART_START_SCALE, <fSizeX, fSizeY, 1.00000>, PSYS_PART_END_SCALE, <fSizeX, fSizeY, 1.00000>, PSYS_SRC_PATTERN, 1, PSYS_SRC_BURST_RATE, 0.000000, PSYS_SRC_ACCEL, <0.00000, 0.00000, (fGravity*-1)>, PSYS_SRC_BURST_PART_COUNT, 10, PSYS_SRC_BURST_RADIUS, 0.000000, PSYS_SRC_BURST_SPEED_MIN, fMinSpeed, PSYS_SRC_BURST_SPEED_MAX, fMaxSpeed, PSYS_SRC_INNERANGLE, 0.000000, PSYS_SRC_OUTERANGLE, 0.000000, PSYS_SRC_OMEGA, <0.00000, 0.00000, 0.00000>, PSYS_SRC_MAX_AGE, 0.000000, PSYS_PART_START_ALPHA, 1.000000, PSYS_PART_END_ALPHA, 1.000000, PSYS_SRC_TARGET_KEY, kTarget, PSYS_SRC_TEXTURE, kTexture ]);
+    llParticleSystem([ PSYS_PART_MAX_AGE, fLife, PSYS_PART_FLAGS, nBitField, PSYS_PART_START_COLOR, <fRed, fGreen, fBlue>, PSYS_PART_END_COLOR, <fRed, fGreen, fBlue>, PSYS_PART_START_SCALE, <fSizeX, fSizeY, 1.00000>, PSYS_PART_END_SCALE, <fSizeX, fSizeY, 1.00000>, PSYS_SRC_PATTERN, 1, PSYS_SRC_BURST_RATE, 0.000000, PSYS_SRC_ACCEL, <0.00000, 0.00000, (fGravity*-1)>, PSYS_SRC_BURST_PART_COUNT, 10, PSYS_SRC_BURST_RADIUS, 0.000000, PSYS_SRC_BURST_SPEED_MIN, fMinSpeed, PSYS_SRC_BURST_SPEED_MAX, fMaxSpeed, PSYS_SRC_INNERANGLE, 0.000000, PSYS_SRC_OUTERANGLE, 0.000000, PSYS_SRC_OMEGA, <0.00000, 0.00000, 0.00000>, PSYS_SRC_MAX_AGE, 0.000000, PSYS_PART_START_ALPHA, 1.000000, PSYS_PART_END_ALPHA, 1.000000, PSYS_SRC_TARGET_KEY, kTarget, PSYS_SRC_TEXTURE, (string)kTexture ]);
 
     g_iLinked = TRUE;
 }
